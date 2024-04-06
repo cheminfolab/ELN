@@ -1,13 +1,13 @@
 import './SubstanceImage.css'
 import {Image} from "react-bootstrap";
 
-// todo: use env variable
-const SubstanceImage = ({path}) => {
-    return (
-        <div>
-            <Image src={'http://127.0.0.1:8000'+String(path)} alt={'chemical structure'} rounded />
-        </div>
-    );
-}
-
+const SubstanceImage = ({path, className=null, onClick=null}) => (
+    <Image
+        src={process.env.REACT_APP_API_BASE_URL+String(path)}
+        alt={'chemical structure'}
+        className={className}
+        onClick={onClick}
+        rounded
+    />
+)
 export default SubstanceImage;

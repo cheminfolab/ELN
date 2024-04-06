@@ -1,5 +1,5 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
+# from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Building(models.Model):
@@ -37,7 +37,7 @@ class Room(models.Model):
 
 class PhoneNumber(models.Model):
     room = models.ForeignKey(Room, on_delete=models.PROTECT, related_name='phones')
-    number = PhoneNumberField(unique=True)
+    number = models.CharField(max_length=20, unique=True)  # PhoneNumberField(unique=True)
 
     def __str__(self):
         return f"{self.room.__str__()}: {self.number}"

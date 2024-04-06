@@ -4,9 +4,9 @@ services:
 
   database:
     container_name: eln_db
-    #restart: unless-stopped
+    # restart: unless-stopped
     image: postgres:15.1
-    env_file: .env
+    env_file: .backend.env
     volumes:
       - eln_db:/var/lib/postgresql/data/
     ports:
@@ -16,11 +16,11 @@ services:
 
   backend:
     container_name: eln_backend
-    #restart: unless-stopped
+    # restart: unless-stopped
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file: .env
+    env_file: .backend.env
     environment:
       - POSTGRES_HOST=database
     ports:
@@ -31,6 +31,35 @@ services:
       - ./backend:/app
     networks:
       - eln
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.23-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      # - ./certbot/conf:/etc/nginx/ssl
+      # - ./certbot/data:/usr/share/nginx/html/letsencrypt
+    depends_on:
+      - database
+      - backend
+    networks:
+      - eln
+
+#  certbot:
+#    container_name: certbot
+#    image: certbot/certbot:latest
+#    restart: unless-stopped
+#    # command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email email@email.com --agree-tos --no-eff-email -d domain.com
+#    volumes:
+#      - ./certbot/conf:/etc/letsencrypt
+#      - ./certbot/data:/usr/share/nginx/html/letsencrypt
+#      - ./certbot/logs:/var/log/letsencrypt
+#    networks:
+#      - flask_eln
 
 volumes:
   eln_db:

@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 
-from barcode_field.fields import BarcodeField
+# from barcode_field.fields import BarcodeField
 
 from accounts.models import WorkingGroup, Member, Supplier
 from locations.models import Storage
@@ -47,6 +47,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     # compound class:
     #
     # Organika
@@ -87,16 +90,9 @@ class UnitCell(models.Model):
 
 
 class Structure(models.Model):
-    # IDENTIFIERS
-    smiles = models.CharField(blank=True, max_length=100)
-    # smarts
-    inchi = models.CharField(blank=True, max_length=100)
-    inchi_key = models.CharField(blank=True, max_length=100)
-    # todo: add validators
-
     # COORDINATES
     atoms = ArrayField(
-        models.CharField(blank=True, max_length=3),
+        models.CharField(max_length=3),
         blank=True,
         default=list
     )
@@ -121,7 +117,7 @@ class Structure(models.Model):
         default=list
     )
     labels = ArrayField(
-        models.CharField(blank=True, max_length=3),
+        models.CharField(max_length=3),
         blank=True,
         default=list
     )
@@ -131,7 +127,7 @@ class Structure(models.Model):
     # basis set (as separate model? fetch from basissetexchange?)
     # orbitals (how to represent?)
 
-    type = models.CharField(blank=True, max_length=50)  # todo: CHOICES (calculation / crystal structure / ...)
+    type = models.CharField(blank=True, null=True, max_length=50)  # todo: CHOICES (calculation / crystal structure / ...)
     description = models.TextField(blank=True)  # (measurement) conditions
 
     # FILES
@@ -148,16 +144,23 @@ class Substance(models.Model):
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=250)  # IUPAC
     synonyms = ArrayField(
-        models.CharField(blank=True, max_length=250),
+        models.CharField(blank=True, null=True, max_length=250),
         blank=True,
         default=list
     )
-    label = models.CharField(blank=True, max_length=250)  # trivial name
-    formula = models.CharField(blank=True, max_length=100)  # todo: add validators (Hill notation)
+    label = models.CharField(blank=True, null=True, max_length=250)  # trivial name
+    formula = models.CharField(blank=True, null=True, max_length=100)  # todo: add validators (Hill notation)
 
     # IDENTIFIERS
-    cas = models.CharField(blank=True, max_length=12)  # todo: add validator
+    smiles = models.CharField(blank=True, null=True, max_length=100)
+    # smarts
+    inchi = models.CharField(blank=True, null=True, max_length=100)
+    inchi_key = models.CharField(blank=True, null=True, max_length=100)
+    # todo: add validators
+
+    cas = models.CharField(blank=True, null=True, max_length=12)  # todo: add validator
     pubchem_sid = models.IntegerField(blank=True, null=True)
+    pubchem_cid = models.IntegerField(blank=True, null=True)
 
     # STRUCTURE
     structure = models.ManyToManyField(Structure, blank=True, related_name='substance_structures')
@@ -186,7 +189,7 @@ class Component(models.Model):
     fraction = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(1.00)], default=1.00
     )
-    type = models.CharField(blank=True, max_length=50)
+    type = models.CharField(blank=True, null=True, max_length=50)
 
     def __str__(self):
         return f"{self.substance.name} ({self.fraction*100}%)"
@@ -195,17 +198,15 @@ class Component(models.Model):
 class Compound(models.Model):
     name = models.CharField(max_length=250)  # IUPAC
     synonyms = ArrayField(
-        models.CharField(blank=True, max_length=250),
+        models.CharField(max_length=250),
         blank=True,
         default=list
     )
-    label = models.CharField(blank=True, max_length=250)
+    label = models.CharField(blank=True, null=True, max_length=250)
     substances = models.ManyToManyField(Component, blank=False, related_name='compounds')
     purity = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(1.00)], default=1.00
     )
-
-    pubchem_cid = models.IntegerField(blank=True, null=True)
 
     # PROPERTIES
     density = models.FloatField(null=True, blank=True)
@@ -213,7 +214,7 @@ class Compound(models.Model):
         Unit, blank=True, null=True, on_delete=models.PROTECT, related_name="density_units"
     )
     # physical state at normal conditions (gaseous, liquid, solid, hypercritical,...)
-    color = models.CharField(blank=True, max_length=20)
+    color = models.CharField(blank=True, null=True, max_length=20)
     melting_point = models.FloatField(blank=True, null=True)
     melting_point_unit = models.ForeignKey(
         Unit, blank=True, null=True, on_delete=models.PROTECT, related_name="melting_point_units"
@@ -303,8 +304,8 @@ class Container(models.Model):
     # is_active (False, when amount_left = 0)
 
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, related_name="products")
-    EAN = BarcodeField(blank=True)
-    product_number = models.CharField(blank=True, max_length=100)
+    EAN = models.CharField(blank=True, null=True, max_length=13)  # BarcodeField(blank=True)
+    product_number = models.CharField(blank=True, null=True, max_length=100)
     # batch_number (self-made: auto-generate?)
     # sku (stock-keeping unit)
 
@@ -319,9 +320,9 @@ class Container(models.Model):
         WorkingGroup, blank=True, null=True, on_delete=models.PROTECT, related_name="group_chemicals"
     )
 
-    description = models.CharField(blank=True, max_length=500)
+    description = models.CharField(blank=True, null=True, max_length=500)
 
-    conditions = models.CharField(blank=True, max_length=50)  # argon, molecular sieve etc. (checkboxes?)
+    conditions = models.CharField(blank=True, null=True, max_length=50)  # argon, molecular sieve etc. (checkboxes?)
 
     created = models.DateField(auto_now_add=True)
     created_by = models.ForeignKey(
