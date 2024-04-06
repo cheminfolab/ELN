@@ -16,7 +16,7 @@ router.register(r'group', WorkingGroupViewSet, basename='groups')
 router.register(r'building', BuildingViewSet, basename='buildings')
 router.register(r'unit', UnitViewSet, basename='units')
 router.register(r'substance', SubstanceViewSet, basename='substances')
-router.register(r'component', ComponentViewSet, basename='containers')
+router.register(r'component', ComponentViewSet, basename='components')
 router.register(r'compound', CompoundViewSet, basename='compounds')
 router.register(r'container', ContainerViewSet, basename='containers')
 

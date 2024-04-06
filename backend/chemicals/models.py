@@ -47,6 +47,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     # compound class:
     #
     # Organika
@@ -160,7 +163,7 @@ class Substance(models.Model):
     pubchem_cid = models.IntegerField(blank=True, null=True)
 
     # STRUCTURE
-    structure = models.ManyToManyField(Structure, blank=True, null=True, related_name='substance_structures')
+    structure = models.ManyToManyField(Structure, blank=True, related_name='substance_structures')
     # STEREOCHEMISTRY?? enantiomers, distereomers, racemic mixtures?
 
     # PROPERTIES
