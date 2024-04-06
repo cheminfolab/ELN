@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 
-    'phonenumber_field',
+    # 'phonenumber_field',
     # 'barcode_field'
     # 'django_rdkit',
 
