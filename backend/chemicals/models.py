@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 
-from barcode_field.fields import BarcodeField
+# from barcode_field.fields import BarcodeField
 
 from accounts.models import WorkingGroup, Member, Supplier
 from locations.models import Storage
@@ -301,7 +301,7 @@ class Container(models.Model):
     # is_active (False, when amount_left = 0)
 
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, related_name="products")
-    EAN = BarcodeField(blank=True)
+    EAN = models.CharField(blank=True, null=True, max_length=13)  # BarcodeField(blank=True)
     product_number = models.CharField(blank=True, null=True, max_length=100)
     # batch_number (self-made: auto-generate?)
     # sku (stock-keeping unit)
