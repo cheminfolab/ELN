@@ -49,7 +49,11 @@ npm install
 ### Docker
 
 ````bash
-docker compose -d --build
+docker compose up -d --build
+````
+or with a respective .env file:
+````bash
+docker compose --env-file .backend.env up -d --build
 ````
 
 ### Native

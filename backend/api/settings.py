@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config, Csv
+from decouple import config, Csv  # Config, RepositoryEnv, Csv  #
 from datetime import timedelta
+
+# config = Config(RepositoryEnv(Path(Path(__file__).resolve().parent.parent.parent, ".backend.env")))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
