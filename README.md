@@ -7,7 +7,7 @@ Install prerequisites:
 or 
 - docker
 
-Setting up the `.backend.env` file:
+Setting up the `.env` file:
 
 ```python
 # .env
@@ -20,8 +20,6 @@ TIME_ZONE='Europe/Berlin'
 POSTGRES_DB='flask_database'
 POSTGRES_USER='admin'
 POSTGRES_PASSWORD='<admin_password>'
-POSTGRES_HOST='localhost'
-POSTGRES_PORT='5432'
 
 #CORS_ALLOW_ALL_ORIGINS=True
 CORS_ALLOWED_ORIGINS='<allowed_origins>, ... '
@@ -52,7 +50,7 @@ docker compose up -d --build
 ````
 or with a respective .env file:
 ````bash
-docker compose --env-file .backend.env up -d --build
+docker compose --env-file .env up -d --build
 ````
 
 #### Stop running the Postgres Instance

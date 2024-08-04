@@ -17,11 +17,11 @@ export const SubPage = () => {
 
     useEffect(() => {
         ApiService
-            .getAll('unit')
+            .getAll('/unit/')
             .then(res => setUnits(res))
             .catch(error => console.log('getAll error:', error))
         ApiService
-            .getAll('substance')
+            .getAll('/substance/')
             .then(res => setSubstances(res))
             .catch(error => console.log('getAll error:', error))
     }, [])
@@ -76,7 +76,6 @@ export const SubPage = () => {
                       <Pagination.Next />
                       <Pagination.Last />
                     </Pagination>
-
                 </Col>
             </Row>
         </Container>

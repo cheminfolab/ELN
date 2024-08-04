@@ -62,19 +62,20 @@ cover/
 *.mo
 *.pot
 
+
 # Django stuff:
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+backend/database
+backend/media
+**/static
+tmp/
 
-/backend/database
 # ignore all migrations except __init__.py
 **/migrations/*
 !**/migrations/__init__.py
-**/images/substances/*
-tmp/
-
 
 
 # PyBuilder
