@@ -8,7 +8,7 @@ import {Tokens, User, LoginUserType, LogoutUserType, RegisterUserType, AuthConte
 const AuthContext = createContext<AuthContextType | {}>({})
 export default AuthContext
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({children}: any) => {
 
     let localTokens = localStorage.getItem('authTokens')
 
@@ -19,14 +19,15 @@ export const AuthProvider = ({children}) => {
     const navigate = useNavigate()
     let api = useAxios()
 
-    let loginUser:LoginUserType = async (e) => {
-        e.preventDefault()
-        await api.axiosInstance // todo: unite multiple services in one instance!
+    let loginUser:LoginUserType = async (event) => {
+        event.preventDefault()
+        await api
+            .axiosInstance // todo: unite multiple services in one instance!
             .post('/token/', {
-                'email':e.target.email.value,
-                'password':e.target.password.value
+                'email':event.target.email.value,
+                'password':event.target.password.value
             })
-            .then( (response) => {
+            .then(response => {
                 if (response.status === 200) {
                     const data = response.data
                     setAuthTokens(data)
@@ -42,7 +43,8 @@ export const AuthProvider = ({children}) => {
 
     let registerUser:RegisterUserType = async event => {
         event.preventDefault()
-        await api.axiosInstance
+        await api
+            .axiosInstance
             .post('/member/register/', {
                 first_name: event.target.first_name.value,
                 last_name: event.target.last_name.value,
@@ -50,10 +52,12 @@ export const AuthProvider = ({children}) => {
                 password:event.target.password.value,
                 working_group: event.target.working_group.value
             })
-            .then( (response) => {
+            .then(response => {
                 if (response.status === 200) {
                     loginUser(event)
-                    // todo: notification / redirection to user page (prompt user for additional info: phone etc.)
+                    // todo:
+                    //      notification / redirection to user page (prompt user for additional info: phone etc.)
+                    //      feedback page ("Thanks for registering", check emails etc...)
                 } else {
                     alert('Something went wrong!')
                 }
@@ -68,11 +72,8 @@ export const AuthProvider = ({children}) => {
         navigate('/')
     }
 
-
     useEffect(() => {
-        if (authTokens){
-            setUser(jwt_decode(authTokens.access))
-        }
+        if (authTokens) setUser(jwt_decode(authTokens.access))
         setLoading(false)
     }, [authTokens, loading])
 

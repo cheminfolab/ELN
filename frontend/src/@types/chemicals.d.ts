@@ -1,3 +1,5 @@
+import React from "react";
+
 export type Id = number
 
 export interface Unit {
@@ -24,6 +26,8 @@ export interface Substance {
     mol_weight_unit: number
     exact_mass_unit: number
 }
+
+type Selected = Id
 
 export interface Component {
     fraction: number
@@ -52,4 +56,11 @@ export interface Compound {
     ghs: number
     created_by: number
     categories: number[]
+}
+
+export type ChemContextType = {
+    units: Unit[],
+    setUnits: React.Dispatch<React.SetStateAction<Unit[]>>,
+    substances: Substance[],
+    setSubstances: React.Dispatch<React.SetStateAction<Substance[]>>
 }

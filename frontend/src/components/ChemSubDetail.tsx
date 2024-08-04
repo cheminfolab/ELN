@@ -1,15 +1,20 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {Col, Container, Form, Modal, Row, Tab, Table, Tabs} from "react-bootstrap";
 import SubstanceImage from "./SubstanceImage";
 import FormulaFormatter from "./FormulaFormatter";
 import DataRow from "./DataRow";
+import {Unit, Substance} from "../@types/chemicals";
 
-const SubstanceDetail = ({units, substance, setDetail}) => {
+interface SubstanceDetailParams {
+    substance: Substance | undefined
+    setDetail: React.Dispatch<React.SetStateAction<Substance | undefined>>
+}
+const SubstanceDetail: React.FC<SubstanceDetailParams> = ({substance, setDetail}) => {
     let [edit, setEdit] = useState(false)
-    if (substance) return(
+    if (substance) return( // todo: improve
         <Modal
-          show={substance !== null}
-          onHide={() => setDetail(null)}
+          show={substance !== undefined}
+          onHide={() => setDetail(undefined)}
           dialogClassName="modal-90w"
           centered
         >
@@ -60,11 +65,11 @@ const SubstanceDetail = ({units, substance, setDetail}) => {
                                                 data={substance.inchi_key}
                                                 edit={edit}
                                             />
-                                            <DataRow
-                                                name={"SMILES"}
-                                                data={substance.smiles}
-                                                edit={edit}
-                                            />
+                                            {/*<DataRow*/}
+                                            {/*    name={"SMILES"}*/}
+                                            {/*    data={substance.smiles}*/}
+                                            {/*    edit={edit}*/}
+                                            {/*/>*/}
                                         </tbody>
                                     </Table>
                                 </Col>
@@ -108,15 +113,13 @@ const SubstanceDetail = ({units, substance, setDetail}) => {
                                         name={"molar mass"}
                                         data={substance.mol_weight}
                                         edit={edit}
-                                        units={units}
-                                        unit={substance.mol_weight_unit}
+                                        unitId={substance.mol_weight_unit}
                                     />
                                     <DataRow
                                         name={"exact mass"}
                                         data={substance.exact_mass}
                                         edit={edit}
-                                        units={units}
-                                        unit={substance.exact_mass_unit}
+                                        unitId={substance.exact_mass_unit}
                                     />
                                 </tbody>
                             </Table>
@@ -179,6 +182,7 @@ const SubstanceDetail = ({units, substance, setDetail}) => {
             </Modal.Body>
         </Modal>
     )
+    return <></>
 }
 
 export default SubstanceDetail

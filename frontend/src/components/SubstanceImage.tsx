@@ -1,9 +1,16 @@
 import './SubstanceImage.css'
 import {Image} from "react-bootstrap";
+import React from "react";
 
-const SubstanceImage = ({path, className=null, onClick=null}) => (
+interface SubstanceImageParams {
+    path: string,
+    className?: string,
+    onClick?: () => void
+}
+
+const SubstanceImage: React.FC<SubstanceImageParams> = ({path, className= undefined, onClick = undefined}) => (
     <Image
-        src={process.env.REACT_APP_API_BASE_URL+String(path)}
+        src={String(path)}
         alt={'chemical structure'}
         className={className}
         onClick={onClick}

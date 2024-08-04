@@ -1,4 +1,4 @@
-import  {useContext} from 'react';
+import React, {useContext} from 'react';
 import {
     Container,
     Navbar,
@@ -17,7 +17,7 @@ import {AuthContextType} from "../@types/authorization"
 
 import Logo from "../flask.png"
 
-const NavbarComp = () => {
+const MainNavbar: React.FC = () => {
 
     let {user, logoutUser} = useContext(AuthContext) as AuthContextType
 
@@ -86,4 +86,4 @@ const NavbarComp = () => {
     );
 }
 
-export default NavbarComp;
+export default MainNavbar;

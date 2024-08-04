@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import AuthContext from "../context/AuthContext";
 import {AuthContextType, User} from "../@types/authorization";
 
@@ -26,6 +26,7 @@ const useAxios = (authentication=false) => {
     if (authentication) {
         axiosInstance.defaults.headers['Authorization'] = `Bearer ${authTokens?.access}`
         axiosInstance.interceptors.request.use(async request => {
+
             // check if token is expired
             const user: User = jwt_decode(authTokens.access)
             const isExpired = dayjs.unix(user.exp).diff(dayjs(), 'second') < 30;

@@ -1,17 +1,27 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {Col, Row, Table, Card, Button, Form, Modal, Container, Tabs, Tab} from "react-bootstrap";
 import SubstanceImage from "./SubstanceImage";
 import FormulaFormatter from "./FormulaFormatter";
 import "./ChemSubTable.css"
-import {Substance} from "../@types/chemicals";
+import {Id, Selected, Substance, Unit} from "../@types/chemicals";
 import SubstanceDetail from "./ChemSubDetail";
 import DataRow from "./DataRow";
 
-const SubstanceCard = ({units, substance, selected, setSelected, setDetail}) => {
-    const setSelection = () => {
-        selected.includes(substance.id)
-            ? setSelected(selected.filter(item => item !== substance.id))
-            : setSelected([substance.id, ...selected])
+interface SubstanceCardParams {
+    units: Unit[],
+    substance: Substance | undefined,
+    selection: Selected[],
+    setSelection: React.Dispatch<React.SetStateAction<Selected[]>>,
+    setDetail: React.Dispatch<React.SetStateAction<Substance | undefined>>
+}
+
+const SubstanceCard: React.FC<SubstanceCardParams> = ({units, substance, selection, setSelection, setDetail}) => {
+
+    if (substance) {
+    const setSelected = () => {
+        selection.includes(substance.id)
+            ? setSelection(selection.filter(item => item !== substance.id))
+            : setSelection([substance.id, ...selection])
     }
     return (
         <Card key={substance.id} className="mb-2">
@@ -20,8 +30,8 @@ const SubstanceCard = ({units, substance, selected, setSelected, setDetail}) => 
                     <Col xs={1}>
                         <Form style={{float: 'left'}}>
                             <Form.Check
-                                checked={selected.includes(substance.id)}
-                                onChange={setSelection}
+                                checked={selection.includes(substance.id)}
+                                onChange={setSelected}
                             />
                         </Form>
                     </Col>
@@ -63,8 +73,7 @@ const SubstanceCard = ({units, substance, selected, setSelected, setDetail}) => 
                                 <DataRow
                                     name={"molar mass"}
                                     data={substance.mol_weight}
-                                    units={units}
-                                    unit={substance.mol_weight_unit}
+                                    unitId={substance.mol_weight_unit}
                                     edit={false}
                                 />
                             </tbody>
@@ -84,25 +93,34 @@ const SubstanceCard = ({units, substance, selected, setSelected, setDetail}) => 
                 </Row>
             </Card.Body>
         </Card>
-    )
+    )}
+    return <></>
 }
 
-const ChemSubTable = ({units, substances, selected, setSelected}) => {
-    let [detail, setDetail] = useState<Substance | null>(null)
+interface ChemSubTableParams {
+    units: Unit[]
+    substances: Substance[]
+    selected: Selected[]
+    setSelected: React.Dispatch<React.SetStateAction<Selected[]>>
+}
+
+const ChemSubTable: React.FC<ChemSubTableParams> = ({units, substances, selected, setSelected}) => {
+    let [detail, setDetail] = useState<Substance | undefined>(undefined)
+
     if (substances.length === 0) return(<Row>No data available.</Row>)
     return(
         <>
-            {substances.map(substance => (
+            {substances.map((substance: Substance) => (
                 <SubstanceCard
-                    units={units}
                     key={substance.id}
+                    units={units}
                     substance={substance}
-                    selected={selected}
-                    setSelected={setSelected}
+                    selection={selected}
+                    setSelection={setSelected}
                     setDetail={setDetail}
-                />))}
+                />
+            ))}
             <SubstanceDetail
-                units={units}
                 substance={detail}
                 setDetail={setDetail}
             />

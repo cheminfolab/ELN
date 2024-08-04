@@ -1,19 +1,28 @@
-import {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Col, Container, Pagination, Row} from "react-bootstrap";
-import ChemComTable from "../components/ChemComTable";
+// import ChemComTable from "../components/ChemComTable";
 import ChemSidebarComp from "../components/ChemSidebarComp";
 import useAxios from "../utils/useAxios";
-import {Compound, Substance, Unit} from "../@types/chemicals";
 import ChemSubTable from "../components/ChemSubTable";
-import {ChemSubNavbar} from "../components/ChemNavbar";
+import {SubstanceNavbar} from "../components/ChemNavbar";
+import ChemContext from "../context/ChemContext";
+import {ChemContextType, Compound, Selected, Substance, Unit} from "../@types/chemicals";
 
 
-export const SubPage = () => {
+export const SubPage: React.FC = () => {
 
-    let ApiService = useAxios(true)
-    let [units, setUnits] = useState<Unit[]>([])
-    let [substances, setSubstances] = useState<Substance[]>([])
-    let [selected, setSelected] = useState<number[]>([])
+    const ApiService = useAxios(true)
+
+    const {
+        units,
+        setUnits,
+        substances,
+        setSubstances
+    } = useContext(ChemContext) as ChemContextType
+
+    // let [units, setUnits] = useState<Unit[]>([])
+    // let [substances, setSubstances] = useState<Substance[]>([])
+    let [selection, setSelection] = useState<Selected[]>([])
 
     useEffect(() => {
         ApiService
@@ -33,10 +42,10 @@ export const SubPage = () => {
                     <h3>Substances</h3>
                 </Col>
                 <Col xs={10}>
-                    <ChemSubNavbar
+                    <SubstanceNavbar
                         substances={substances}
-                        selected={selected}
-                        setSelected={setSelected}
+                        selected={selection}
+                        setSelected={setSelection}
                     />
                 </Col>
             </Row>
@@ -50,8 +59,8 @@ export const SubPage = () => {
                         <ChemSubTable
                             units={units}
                             substances={substances}
-                            selected={selected}
-                            setSelected={setSelected}
+                            selected={selection}
+                            setSelected={setSelection}
                         />
                     </div>
                 </Col>
@@ -127,12 +136,12 @@ export const ComPage = () => {
                     <ChemSidebarComp/>
                 </Col>
                 <Col  xs={10} id="page-content-wrapper">
-                    <ChemComTable
-                        compounds={compounds}
-                        // setShow={setShow}
-                        // setCompoundId={setCompoundId}
-                    />
-
+                    {/*<ChemComTable*/}
+                    {/*    compounds={compounds}*/}
+                    {/*    // setShow={setShow}*/}
+                    {/*    // setCompoundId={setCompoundId}*/}
+                    {/*/>*/}
+                    No compounds available
                     {/*<ChemDetailComp*/}
                     {/*    show={show}*/}
                     {/*    setShow={setShow}*/}

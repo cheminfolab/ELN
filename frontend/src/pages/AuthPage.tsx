@@ -1,8 +1,9 @@
-import {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import AuthContext from "../context/AuthContext";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {AuthContextType, AuthModeType, Errors, RegistrationForm} from "../@types/authorization";
 import {Group} from "../@types/accounts";
+import useAxios from "../utils/useAxios";
 
 export default function AuthPage() {
 
@@ -10,9 +11,11 @@ export default function AuthPage() {
   let [authMode, setAuthMode] = useState<AuthModeType>("login")
   let [groups, setGroups] = useState<Group[] | []>([])
 
+  // const api = useAxios(authentication = true)
+
   // todo: use axios
-  let getApiResponse = async (items, setState) => {
-    let response = await fetch('http://127.0.0.1:8000/api/'+String(items), {
+  let getApiResponse = async (items: any, setState: React.Dispatch<React.SetStateAction<any>>) => {
+    let response = await fetch('/api/'+String(items), {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
     })
@@ -35,43 +38,35 @@ export default function AuthPage() {
   // VALIDATION
 
   const [form, setForm] = useState<RegistrationForm>({
-    "first_name": null,
-    "last_name": null,
-    "working_group": null,
-    "status": null,
-    "email": null,
-    "password": null,
-    "password2": null
+    first_name: undefined,
+    last_name: undefined,
+    working_group: undefined,
+    status: undefined,
+    email: undefined,
+    password: undefined,
+    password2: undefined
   })
   const [errors, setErrors] = useState<Errors>({})
 
-  const setField = (field, value) => {
-    setForm({
-      ...form,
-      [field]:value,
-    })
-
-    if (!!errors[field])
-      setErrors({
-          ...errors,
-        [field]:null,
-      })
+  const setField = (field: keyof RegistrationForm, value: number | string) => {
+    setForm({...form, [field]: value})
+    if (!!errors[field]) setErrors({...errors, [field]:null})
   }
 
   const validateForm:() => Errors = () => {
     const newErrors: Errors = {
-      "first_name": null,
-      "last_name": null,
-      "working_group": null,
-      "status": null,
-      "email": null,
-      "password": null,
-      "password2": null
+      first_name: undefined,
+      last_name: undefined,
+      working_group: undefined,
+      status: undefined,
+      email: undefined,
+      password: undefined,
+      password2: undefined
     }
     const NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{2,23}/i
     const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,120}$/i
-    const validName = name => NAME_REGEX.test(name)
-    const validPassword = pwd => PWD_REGEX.test(pwd)
+    const validName = (name: string) => NAME_REGEX.test(name)
+    const validPassword = (pwd: string) => PWD_REGEX.test(pwd)
 
     // todo: LOGIN
     // https://www.youtube.com/watch?v=86uXSFm3ND0
@@ -98,15 +93,13 @@ export default function AuthPage() {
     return newErrors
   }
 
-  const handleSubmit = event => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault()
     const formErrors = validateForm()
     if (Object.keys(formErrors).length > 0) setErrors(formErrors)
     else if (authMode === 'login') loginUser(event)
     else registerUser(event)
   }
-
-
 
   if (authMode === "login") {
     return (

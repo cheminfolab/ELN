@@ -1,15 +1,28 @@
+import * as React from 'react'
 import {
-    Card, Col,
+    Card,
+    Col,
     Container,
     Dropdown,
-    DropdownButton, Form,
+    DropdownButton,
+    Form,
     Nav,
     Navbar,
-    NavDropdown, Row
+    NavDropdown,
+    Row
 } from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {Selected, Substance} from "../@types/chemicals";
 
-export const ChemSubNavbar = ({substances, selected, setSelected}) => {
+interface SubstanceNavbarParams {
+    substances: Substance[],
+    selected: Selected[],
+    setSelected:  React.Dispatch<React.SetStateAction<Selected[]>>
+}
+
+// type SubstanceNavbarType = ({substances, selected, setSelected}: SubstanceNavbarParams) => void
+
+export const SubstanceNavbar: React.FC<SubstanceNavbarParams> = ({substances, selected, setSelected}) => {
     const checkAll = () => {
         selected.length === substances.length
             ? setSelected([])
@@ -23,8 +36,8 @@ export const ChemSubNavbar = ({substances, selected, setSelected}) => {
                         <Nav className="me-auto">
                             <Form>
                                 <Form.Check
-                                    type="checkbox"
                                     id="select-all"
+                                    type="checkbox"
                                     label="all"
                                     onChange={checkAll}
                                     checked={selected.length === substances.length}
@@ -144,7 +157,7 @@ export const ChemSubNavbar = ({substances, selected, setSelected}) => {
     )
 }
 
-export const ChemComNavbar = ({substances, selected, setSelected}) => {
+export const ChemComNavbar: React.FC<SubstanceNavbarParams> = ({substances, selected, setSelected}) => {
     const checkAll = () => {
         selected.length === substances.length
             ? setSelected([])

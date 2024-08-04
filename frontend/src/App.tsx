@@ -1,6 +1,6 @@
 import {BrowserRouter as Router} from "react-router-dom";
 import {AuthProvider} from "./context/AuthContext";
-import NavbarComp from "./components/NavbarComp";
+import MainNavbar from "./components/Navbars";
 import RoutesComp from "./components/RoutesComp";
 
 import './App.css';
@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-            <NavbarComp/>
+            <MainNavbar/>
             <RoutesComp/>
         </AuthProvider>
       </Router>
