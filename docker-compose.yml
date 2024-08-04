@@ -17,6 +17,25 @@ services:
     networks:
       - eln
 
+  frontend:
+    container_name: eln_frontend
+    # restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file: .env
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - backend
+    volumes:
+      - build:/app/build
+      # - ./frontend:/app
+#    stdin_open: true
+#    tty: true
+#    networks:
+#      - eln
+
   backend:
     container_name: eln_backend
     # restart: unless-stopped
@@ -35,25 +54,6 @@ services:
       - ./backend:/app
       - static:/app/static
       - media:/app/media
-    networks:
-      - eln
-
-  frontend:
-    container_name: eln_frontend
-    # restart: unless-stopped
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    env_file: .env
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    volumes:
-      - build:/app/build
-      # - ./frontend:/app
-#    stdin_open: true
-#    tty: true
     networks:
       - eln
 
