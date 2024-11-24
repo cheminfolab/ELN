@@ -1,16 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Col, Container, Pagination, Row} from "react-bootstrap";
-// import CompoundTable from "../components/CompoundTable";
 import useAxios from "../hooks/useAxios";
 import SubstanceTable from "../components/SubstanceTable";
-import {ChemContextType, Compound, Selected, Substance, Unit} from "../@types/chemicals";
 import ChemContext from "../contexts/ChemContext";
+import {ChemContextType, Selected} from "../@types/chemicals";
 import {SubstanceSidebar, SubstanceNavbar} from "../components/Navbars";
 
 
-export const SubPage: React.FC = () => {
+export const SubstancePage: React.FC = () => {
 
-    const ApiService = useAxios(true)
+    const api = useAxios(true)
 
     const {
         units,
@@ -19,16 +18,14 @@ export const SubPage: React.FC = () => {
         setSubstances
     } = useContext(ChemContext) as ChemContextType
 
-    // let [units, setUnits] = useState<Unit[]>([])
-    // let [substances, setSubstances] = useState<Substance[]>([])
     let [selection, setSelection] = useState<Selected[]>([])
 
     useEffect(() => {
-        ApiService
+        api
             .getAll('/unit/')
             .then(res => setUnits(res))
             .catch(error => console.log('getAll error:', error))
-        ApiService
+        api
             .getAll('/substance/')
             .then(res => setSubstances(res))
             .catch(error => console.log('getAll error:', error))
@@ -84,68 +81,6 @@ export const SubPage: React.FC = () => {
                       <Pagination.Next />
                       <Pagination.Last />
                     </Pagination>
-                </Col>
-            </Row>
-        </Container>
-    );
-}
-
-export const ComPage = () => {
-
-    let ApiService = useAxios(true)
-    let [compounds, setCompounds] = useState<Compound[]>([])
-    // let [containers, setContainers] = useState([])
-    // let [containerDetail, setContainerDetail] = useState({
-    //     id: null,
-    //     substance: {image:null}
-    // })
-    // let [containerId, setContainerId] = useState()
-    // let [show, setShow] = useState(false)
-
-    useEffect(() => {
-        ApiService
-            .getAll('compound')
-            .then(res => setCompounds(res))
-            .catch(error => console.log('getAll error:', error))
-    }, [])
-
-    // useEffect(() => console.log(compounds), [compounds])
-
-    // useEffect(() => {
-    //     console.log('compoundId', compoundId)
-    //     if (compoundId) {
-    //     ApiService
-    //         .get('compound', compoundId)
-    //         .then(returnedcompound => setcompoundDetail(returnedcompound))
-    //         .catch(error => console.log('get error:', error))
-    // }}, [compoundId])
-
-    return (
-        <Container fluid className="mb-2">
-            <Row>
-                <Col xs={2}>
-                    <h3>Chemicals</h3>
-                </Col>
-                <Col xs={10}>
-                    {/*<ChemComNavbar/>*/}
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={2} id="sidebar-wrapper">
-                    <SubstanceSidebar/>
-                </Col>
-                <Col  xs={10} id="page-content-wrapper">
-                    {/*<CompoundTable*/}
-                    {/*    compounds={compounds}*/}
-                    {/*    // setShow={setShow}*/}
-                    {/*    // setCompoundId={setCompoundId}*/}
-                    {/*/>*/}
-                    No compounds available
-                    {/*<ChemDetailComp*/}
-                    {/*    show={show}*/}
-                    {/*    setShow={setShow}*/}
-                    {/*    compoundId={compoundId}*/}
-                    {/*/>*/}
                 </Col>
             </Row>
         </Container>

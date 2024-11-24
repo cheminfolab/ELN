@@ -3,7 +3,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 import HomePage from "../pages/HomePage";
 import AuthPage from "../pages/AuthPage";
-import {SubPage} from "../pages/ChemPage";
+import {SubstancePage} from "../pages/ChemPage";
 import ProjectPage from "../pages/ProjectPage";
 import {ChemProvider} from "../context/ChemContext";
 import AuthContext from "../context/AuthContext";
@@ -35,7 +35,7 @@ const Routing: React.FC = () => {
                     element={
                         <PrivateRoute>
                             <ChemProvider>
-                                <SubPage/>
+                                <SubstancePage/>
                             </ChemProvider>
                         </PrivateRoute>
                     }
