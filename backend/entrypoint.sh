@@ -6,5 +6,5 @@ python /app/manage.py loaddata accounts.json
 python /app/manage.py loaddata units.json
 python /app/manage.py collectstatic --noinput
 
-gunicorn api.wsgi:application --bind 0.0.0.0:8000
 #python /app/manage.py runserver 0.0.0.0:8000
+gunicorn api.wsgi:application --bind 0.0.0.0:8000
