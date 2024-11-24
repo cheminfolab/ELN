@@ -5,8 +5,8 @@ import HomePage from "../pages/HomePage";
 import AuthPage from "../pages/AuthPage";
 import {SubstancePage} from "../pages/ChemPage";
 import ProjectPage from "../pages/ProjectPage";
-import {ChemProvider} from "../context/ChemContext";
-import AuthContext from "../context/AuthContext";
+import {ChemProvider} from "../contexts/ChemContext";
+import AuthContext from "../contexts/AuthContext";
 import {AuthContextType} from "../@types/authorization";
 import '../pages/AuthPage.css'
 
