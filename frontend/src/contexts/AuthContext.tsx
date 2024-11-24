@@ -1,7 +1,7 @@
 import {createContext, useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom'
 import jwt_decode from 'jwt-decode';
-import useAxios from "../utils/useAxios";
+import useAxios from "../hooks/useAxios";
 import {Tokens, User, LoginUserType, LogoutUserType, RegisterUserType, AuthContextType} from "../@types/authorization"
 
 

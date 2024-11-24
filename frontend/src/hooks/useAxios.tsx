@@ -2,7 +2,7 @@ import {useContext} from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../contexts/AuthContext";
 import {AuthContextType, User} from "../@types/authorization";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api/'
