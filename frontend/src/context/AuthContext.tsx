@@ -19,10 +19,10 @@ export const AuthProvider = ({children}: any) => {
     const navigate = useNavigate()
     let api = useAxios()
 
-    let loginUser:LoginUserType = async (event) => {
+    let loginUser:LoginUserType = (event) => {
         event.preventDefault()
-        await api
-            .axiosInstance // todo: unite multiple services in one instance!
+        api
+            .axiosInstance // todo: use axiosInstance.create
             .post('/token/', {
                 'email':event.target.email.value,
                 'password':event.target.password.value
@@ -41,9 +41,9 @@ export const AuthProvider = ({children}: any) => {
             .catch(error => console.log(error))
     }
 
-    let registerUser:RegisterUserType = async event => {
+    let registerUser:RegisterUserType = event => {
         event.preventDefault()
-        await api
+        api
             .axiosInstance
             .post('/member/register/', {
                 first_name: event.target.first_name.value,

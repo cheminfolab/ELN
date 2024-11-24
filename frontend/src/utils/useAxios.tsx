@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import AuthContext from "../context/AuthContext";
 import {AuthContextType, User} from "../@types/authorization";
 
+const baseURL = process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api/'
+
 const useAxios = (authentication=false) => {
     const {
         authTokens,
@@ -15,7 +17,7 @@ const useAxios = (authentication=false) => {
 
     const axiosInstance = axios
         .create({
-            baseURL: '/api/',
+            baseURL: baseURL,
             timeout: 5000, // ms
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ const useAxios = (authentication=false) => {
 
     if (authentication) {
         axiosInstance.defaults.headers['Authorization'] = `Bearer ${authTokens?.access}`
-        axiosInstance.interceptors.request.use(async request => {
+        axiosInstance.interceptors.request.use(request => {
 
             // check if token is expired
             const user: User = jwt_decode(authTokens.access)
@@ -33,54 +35,56 @@ const useAxios = (authentication=false) => {
             if (!isExpired) return request
 
             // if token is expired, request new token
-            const response = await axios.post(`/api/token/refresh/`, {
-                refresh: authTokens.refresh
-            })
-            const tokens = response.data
-
-            localStorage.setItem('authTokens', JSON.stringify(tokens))
-            setAuthTokens(tokens)
-            setUser(jwt_decode(tokens.access))
-
-            request.headers.Authorization = `Bearer ${tokens.access}`
+            axios
+                .post(`${baseURL}/token/refresh/`, {refresh: authTokens.refresh})
+                .then(response => {
+                    console.log('token refresh response:', response)
+                    const tokens = response.data
+                    setAuthTokens(tokens)
+                    localStorage.setItem('authTokens', JSON.stringify(tokens))
+                    setUser(jwt_decode(tokens.access))
+                    request.headers.Authorization = `Bearer ${tokens.access}`
+                })
+                .catch(error => console.log(error.response.statusText)) // todo: change
             return request
         })
     }
+
     const getAll = (url: string) => axiosInstance
         .get(url)
-        .then(response => {
-            if (response.statusText === 'Unauthorized') logoutUser()
-            return response.data
+        .then(response => response.data)
+        .catch(error => {
+            // todo: change to status?
+            if (error.response.statusText === 'Unauthorized') logoutUser()
         })
 
-    const get = (url: string, id: string) => axiosInstance
+    const get = (url: string, id: string | number) => axiosInstance
         .get(`${url}/${id}`)
-        .then(response => {
-            if (response.statusText === 'Unauthorized') logoutUser()
-            return response.data
+        .then(response => response.data)
+        .catch(error => {
+            if (error.response.statusText === 'Unauthorized') logoutUser()
         })
 
     const create = (url: string, newObject: {}) => axiosInstance
         .post(url, newObject)
-        .then(response => {
-            if (response.statusText === 'Unauthorized') logoutUser()
-            return response.data
+        .then(response => response.data)
+        .catch(error => {
+            if (error.response.statusText === 'Unauthorized') logoutUser()
         })
 
-    const update = (url: string, id: string, newObject: {}) => axiosInstance
+    const update = (url: string, id: string | number, newObject: {}) => axiosInstance
         .put(`${url}/${id}`, newObject)
-        .then(response => {
-            if (response.statusText === 'Unauthorized') logoutUser()
-            return response.data
+        .then(response => response.data)
+        .catch(error => {
+            if (error.response.statusText === 'Unauthorized') logoutUser()
         })
 
-    const remove = (url: string, id: string) => axiosInstance
+    const remove = (url: string, id: string | number) => axiosInstance
         .delete(`${url}/${id}`)
-        .then(response => {
-            if (response.statusText === 'Unauthorized') logoutUser()
-            console.log('delete response', response)
+        .then(response => console.log('delete response', response))
+        .catch(error => {
+            if (error.response.statusText === 'Unauthorized') logoutUser()
         })
-
 
     return {axiosInstance, getAll, get, create, update, remove}
 }

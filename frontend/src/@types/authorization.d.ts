@@ -14,9 +14,9 @@ export interface User {
   email: string
 }
 
-export type LoginUserType = (event: any) => Promise<void>
+export type LoginUserType = (event: any) => void
 export type LogoutUserType = () => void
-export type RegisterUserType = (event: any) => Promise<void>
+export type RegisterUserType = (event: any) => void
 
 export type AuthContextType = {
     user: User

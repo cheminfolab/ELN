@@ -11,26 +11,30 @@ export default function AuthPage() {
   let [authMode, setAuthMode] = useState<AuthModeType>("login")
   let [groups, setGroups] = useState<Group[] | []>([])
 
-  // const api = useAxios(authentication = true)
+  const api = useAxios()
 
   // todo: use axios
-  let getApiResponse = async (items: any, setState: React.Dispatch<React.SetStateAction<any>>) => {
-    let response = await fetch('/api/'+String(items), {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    })
-    let data = await response.json()
-    if (response.status === 200){
-        setState(data)
-    } else if (response.statusText === 'Unauthorized'){
-        console.log("An error occurred.")
-    }
-  }
-
-  let getGroups = () => getApiResponse('group/', setGroups);
+  // let getApiResponse = async (items: any, setState: React.Dispatch<React.SetStateAction<any>>) => {
+  //   let response = await fetch('/api/'+String(items), {
+  //       method: 'GET',
+  //       headers: {'Content-Type': 'application/json'}
+  //   })
+  //   let data = await response.json()
+  //   if (response.status === 200){
+  //       setState(data)
+  //   } else if (response.statusText === 'Unauthorized'){
+  //       console.log("An error occurred.")
+  //   }
+  // }
+  //
+  // let getGroups = () => getApiResponse('group/', setGroups);
 
   useEffect(() => {
-      getGroups();
+    // getGroups();
+    api
+      .getAll('/group/')
+      .then(returnedGroups => setGroups(returnedGroups))
+      .catch(error => console.log(error))
   }, [])
 
   const changeAuthMode = () => {setAuthMode(authMode === "login" ? "register" : "login")}
