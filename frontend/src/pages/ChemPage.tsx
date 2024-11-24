@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Col, Container, Pagination, Row} from "react-bootstrap";
 // import CompoundTable from "../components/CompoundTable";
-import useAxios from "../utils/useAxios";
+import useAxios from "../hooks/useAxios";
 import SubstanceTable from "../components/SubstanceTable";
-import ChemContext from "../context/ChemContext";
 import {ChemContextType, Compound, Selected, Substance, Unit} from "../@types/chemicals";
+import ChemContext from "../contexts/ChemContext";
 import {SubstanceSidebar, SubstanceNavbar} from "../components/Navbars";
 
 

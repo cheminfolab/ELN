@@ -1,9 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react';
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../contexts/AuthContext";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {AuthContextType, AuthModeType, Errors, RegistrationForm} from "../@types/authorization";
 import {Group} from "../@types/accounts";
-import useAxios from "../utils/useAxios";
+import useAxios from "../hooks/useAxios";
 
 export default function AuthPage() {
 

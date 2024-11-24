@@ -1,6 +1,6 @@
 import {ChemContextType, Id, Unit} from "../@types/chemicals";
 import React, {useContext} from "react";
-import ChemContext from "../context/ChemContext";
+import ChemContext from "../contexts/ChemContext";
 
 interface DataRowParams {
     name: string,
