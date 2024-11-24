@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {Col, Row, Table, Card, Button, Form, Modal, Container, Tabs, Tab} from "react-bootstrap";
 import SubstanceImage from "./SubstanceImage";
 import FormulaFormatter from "./FormulaFormatter";
-import "./ChemSubTable.css"
+import "./SubstanceTable.css"
 import {Id, Selected, Substance, Unit} from "../@types/chemicals";
-import SubstanceDetail from "./ChemSubDetail";
+import SubstanceDetail from "./SubstanceDetail";
 import DataRow from "./DataRow";
 
 interface SubstanceCardParams {
@@ -104,7 +104,7 @@ interface ChemSubTableParams {
     setSelected: React.Dispatch<React.SetStateAction<Selected[]>>
 }
 
-const ChemSubTable: React.FC<ChemSubTableParams> = ({units, substances, selected, setSelected}) => {
+const SubstanceTable: React.FC<ChemSubTableParams> = ({units, substances, selected, setSelected}) => {
     let [detail, setDetail] = useState<Substance | undefined>(undefined)
 
     if (substances.length === 0) return(<Row>No data available.</Row>)
@@ -128,4 +128,4 @@ const ChemSubTable: React.FC<ChemSubTableParams> = ({units, substances, selected
     )
 }
 
-export default ChemSubTable
+export default SubstanceTable

@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Col, Container, Pagination, Row} from "react-bootstrap";
-// import ChemComTable from "../components/ChemComTable";
-import ChemSidebarComp from "../components/ChemSidebarComp";
+// import CompoundTable from "../components/CompoundTable";
 import useAxios from "../utils/useAxios";
-import ChemSubTable from "../components/ChemSubTable";
-import {SubstanceNavbar} from "../components/ChemNavbar";
+import SubstanceTable from "../components/SubstanceTable";
 import ChemContext from "../context/ChemContext";
 import {ChemContextType, Compound, Selected, Substance, Unit} from "../@types/chemicals";
+import {SubstanceSidebar, SubstanceNavbar} from "../components/Navbars";
 
 
 export const SubPage: React.FC = () => {
@@ -51,12 +50,12 @@ export const SubPage: React.FC = () => {
             </Row>
             <Row xs="auto">
                 <Col xs={2} id="sidebar-wrapper">
-                    <ChemSidebarComp/>
+                    <SubstanceSidebar/>
                 </Col>
                 <Col  xs={10} id="page-content-wrapper">
                     <div className="overflow-auto">
                         {/* todo: overflow not working */}
-                        <ChemSubTable
+                        <SubstanceTable
                             units={units}
                             substances={substances}
                             selected={selection}
@@ -133,10 +132,10 @@ export const ComPage = () => {
             </Row>
             <Row>
                 <Col xs={2} id="sidebar-wrapper">
-                    <ChemSidebarComp/>
+                    <SubstanceSidebar/>
                 </Col>
                 <Col  xs={10} id="page-content-wrapper">
-                    {/*<ChemComTable*/}
+                    {/*<CompoundTable*/}
                     {/*    compounds={compounds}*/}
                     {/*    // setShow={setShow}*/}
                     {/*    // setCompoundId={setCompoundId}*/}

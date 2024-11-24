@@ -10,29 +10,7 @@ interface DataRowParams {
     unitId?: Id,
 }
 
-// const TableData = (item: any, unitId: Id, units: Unit[]) => {
-//     if (units === undefined) {
-//         return (
-//             <span
-//                 className={"p-0"} onClick={() => navigator.clipboard.writeText(item)}
-//                 style={{cursor: 'pointer'}}
-//             >
-//             {item} {unitId ? units.find((unit: Unit) => unit.id === unitId).symbol : null}<br/>
-//         </span>
-//         )
-//     }
-//     else {
-//         return (
-//             <span
-//                 className={"p-0"} onClick={() => navigator.clipboard.writeText(item)}
-//                 style={{cursor: 'pointer'}}
-//             >
-//             {item} {units ? units.find(unit => unit.id === unitId).symbol : null}<br/>
-//         </span>
-//         )
-//     }
-// }
-
+// TODO: revise! (rewrite + better unit handling)
 const DataRow: React.FC<DataRowParams> = ({name, data, edit, text = undefined, unitId = undefined}) => {
 
     const {units} = useContext(ChemContext) as ChemContextType

@@ -14,7 +14,7 @@ const PrivateRoute: React.FC<any> = ({children}) => {
     const {user} = useContext(AuthContext) as AuthContextType
     return user ? children : <Navigate to="/login"/>
 }
-const RoutesComp: React.FC = () => {
+const Routing: React.FC = () => {
     return (
         <div>
             <Routes>
@@ -49,4 +49,4 @@ const RoutesComp: React.FC = () => {
     );
 }
 
-export default RoutesComp;
+export default Routing;
